@@ -93,12 +93,12 @@ findbapwv <- function(pressarm,pressleg,height) {
   
   
 
-  return(list(
-    d2leg = d2leg,
-    posleg1 = posleg1
-    
-  ))
+  # return(list(
+  #   d2leg = d2leg,
+  #   posleg1 = posleg1
+  #   
+  # ))
   
-  #return(oscarm) # testing
+  return(bapwv)
   
 }

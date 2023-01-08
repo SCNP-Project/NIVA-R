@@ -11,26 +11,26 @@ peakFinder <- function(x0, sel, thresh, extrema, include_endpoints) {
   len0 <- length(x0)
 
 
-  # # Check if data is not a vector or empty
+  # Check if data is not a vector or empty
   if (len0 != s[1] && len0 != s[2]) stop('PEAKFINDER:Input - ','The input data must be a vector')
   else if (length(x0) == 0) return (c())
 
-  # # Check if data is real number
+  # Check if data is real number
   if(!is.numeric(x0)) {
     warning('PEAKFINDER:NotReal - ','Absolute value of data will be used')
     x0 <- abs(x0)
   }
 
 
-  # # Parameter check: If there is only 1 input parameter exist
+  # Parameter check: If there is only 1 input parameter exist
   if (nargs() < 2 || missing(sel) || !is.numeric(sel)) sel <- (max(x0)-min(x0))/4
   else if (length(sel) > 1) sel <- sel[1]
 
-  # # Parameter check: If there are only 2 input parameter exist
+  # Parameter check: If there are only 2 input parameter exist
   if (nargs() < 3 || missing(thresh) || !is.numeric(thresh)) thresh <- c()
   else if (length(thresh) > 1) thresh <- thresh[1]
 
-  # # Parameter check: If there are only 3 input parameter exist
+  # Parameter check: If there are only 3 input parameter exist
   if (nargs() < 4 || missing(extrema)) extrema <- 1
   else {
     # Should only be 1 or -1 but make sure
@@ -38,24 +38,24 @@ peakFinder <- function(x0, sel, thresh, extrema, include_endpoints) {
     if (extrema == 0) stop('PEAKFINDER:ZeroMaxima - ','Either 1 (for maxima) or -1 (for minima) must be input for extrema')
   }
 
-  # # Parameter check: If there are only 4 input parameter exist
+  # Parameter check: If there are only 4 input parameter exist
   if (nargs() < 5 || missing(include_endpoints)) include_endpoints <- TRUE
 
 
-  # # Make it so we are finding maxima regardless
+  # Make it so we are finding maxima regardless
   x0 <- extrema*x0
-  # # Adjust threshold according to extrema.
+  # Adjust threshold according to extrema.
   thresh <- thresh*extrema
-  # # Find derivative
+  # Find derivative
   dx0 <- diff(x0)
-  # # This is so we find the first of repeated values. Note: User pracma package for eps
+  # This is so we find the first of repeated values. Note: User pracma package for eps
   require('pracma')
   dx0 <-replace(dx0, dx0==0, -eps(1))
   # Find where the derivative changes sign
   ind <- which(dx0[1:length(dx0)-1] * dx0[2:length(dx0)] < 0) + 1
 
 
-  # # Include endpoints in potential peaks and valleys as desired
+  # Include endpoints in potential peaks and valleys as desired
   if (include_endpoints) {
     x <- c(x0[1], x0[ind], x0[length(x0)])
     ind <- c(1, ind, len0)
@@ -69,11 +69,11 @@ peakFinder <- function(x0, sel, thresh, extrema, include_endpoints) {
   }
 
 
-  # # x only has the peaks, valleys, and possibly endpoints
+  # x only has the peaks, valleys, and possibly endpoints
   len <- length(x)
 
-  # # Function with peaks and valleys
-  # if (len > 2) {
+  # Function with peaks and valleys
+  if (len > 2) {
     # Set initial parameters for loop
     tempMag <- minMag
     foundPeak <- FALSE
@@ -189,7 +189,7 @@ peakFinder <- function(x0, sel, thresh, extrema, include_endpoints) {
     }
   }
 
-  # # Apply threshold value.  Since always finding maxima it will always be larger than the thresh.
+  # Apply threshold value.  Since always finding maxima it will always be larger than the thresh.
   if (length(thresh) != 0) {
     m <- peakMags > thresh
     peakInds <- peakInds[m]
@@ -202,13 +202,13 @@ peakFinder <- function(x0, sel, thresh, extrema, include_endpoints) {
     peakInds <- peakInds
   }
 
-  # # Change sign of data if was finding minima
+  # Change sign of data if was finding minima
   if (extrema < 0) {
     peakMags <- (peakMags * -1)
     x0 <- -x0
   }
 
-  # # Plot if no output desired
+  # Plot if no output desired
   if (missing(peakInds)) {
     warning('No significant peaks found')
   }
