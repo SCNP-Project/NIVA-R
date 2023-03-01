@@ -1,7 +1,8 @@
 findbapwv <- function(pressarm,pressleg,height) {
   
   # Perubahan data sensor Arm ke mm Hg
-  Varm <- pressarm/(2^23)*5
+  # Varm <- pressarm/(2^23)*5
+  Varm <- pressarm/(2^23)*4.9
   Parm <- (Varm/0.09 - 2.2222)*7.5
   
   # Perhitungan osc Arm yang berasal dari sinyal Parm
@@ -9,7 +10,8 @@ findbapwv <- function(pressarm,pressleg,height) {
   oscarm = Parm - pfarm
   
   # Perubahan data sensor Leg ke mm Hg
-  Vleg <- pressleg/(2^23)*5
+  # Vleg <- pressleg/(2^23)*5
+  Vleg <- pressleg/(2^23)*4.9
   Pleg <- (Vleg/0.09 - 2.2222)*7.5
   
   # Perhitungan osc Leg yang berasal dari sinyal Pleg
@@ -33,21 +35,22 @@ findbapwv <- function(pressarm,pressleg,height) {
   oscarm <- oscarm[loc:length(oscarm)]
   oscleg <- oscleg[loc:length(oscleg)]
   
-  oscmaxmin <- oscmaxmin[2000:length(oscmaxmin)]
+  # oscmaxmin <- oscmaxmin[2000:length(oscmaxmin)]
+  # 
+  # pos <- which.max(oscmaxmin)
+  # mag <- oscmaxmin[pos]
   
-  pos <- which.max(oscmaxmin)
-  mag <- oscmaxmin[pos]
+
+  testLength <- length(oscmaxmin)
+  testLength <- testLength - 30000
+  newOscmaxim <- oscmaxmin[2000: testLength]
   
-  # NIVA sekarang
-  # pos <- peakFinder(oscmaxmin[2000:(length(oscmaxmin) - 30000)])
-  # pos <- pos + 1999
+  # pos <- which.max(oscmaxmin)
+  pos <- peakFinder(newOscmaxim)
+  pos <- pos + 1999
+  
   mapidx <- pos[length(pos)]
-  
-  # return(list(
-  #   loc = loc,
-  #   pos = pos,
-  #   mapidx = mapidx
-  # ))
+
   
   # menghindari systol dan diastol
   # biasanya variabel map index ini yang dirubah-rubah jika hasil perhitungannya error
@@ -61,6 +64,7 @@ findbapwv <- function(pressarm,pressleg,height) {
   d2arm <- differential_oscarm$d2
   d1leg <- differential_oscleg$d1
   d2leg <- differential_oscleg$d2
+  
   # 
   posarm1 <- peakFinder(d2arm)
   posleg1 <- peakFinder(d2leg)
@@ -95,6 +99,7 @@ findbapwv <- function(pressarm,pressleg,height) {
 
   # return(list(
   #   d2leg = d2leg,
+  #   posleg = posleg,
   #   posleg1 = posleg1
   #   
   # ))
