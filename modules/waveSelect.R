@@ -1,4 +1,7 @@
 waveselect <- function(comp) {
+  
+  library(signal)
+  
   # smoothing by fitting using smoothing spline
   s <- 1000
   r <- 0.9999
@@ -124,10 +127,10 @@ waveselect <- function(comp) {
   ysum <- rep(0, rf)
   
   # testYseum <- ysum
-  
+
   ysTest <- yr[feet[1]:feet[1 + 1]] # COBA
-  ysTest <- resampleQ(ysTest, rf, length(ysTest))  # COBA
-  
+  ysTest <- resample(ysTest, rf, length(ysTest))  # COBA
+
   plot(ysTest, type = "l", xlab = "Index", ylab = "Value", main = "Feet and Average Full Selection")
   
   
@@ -160,7 +163,7 @@ waveselect <- function(comp) {
 
   for (i in 1:(length(feet) - 1)) {
     ys <- yr[feet[i]:feet[i + 1]]
-    ys_arr[[i]] <- resampleQ(ys, rf, length(ys), i)
+    ys_arr[[i]] <- resample(ys, rf, length(ys))
     ysum <- ysum + ys_arr[[i]]
     points(ys, col = "green", pch = ".")
   }
@@ -181,14 +184,14 @@ waveselect <- function(comp) {
   cat(paste0("feet = ", feet, "\n"))
   
   ysTest2 <-yr[feet[yl[1]] : feet[yl[1]+1]] # COBA
-  ysTest2 <- resampleQ(ysTest2, rf, length(ysTest2))  # COBA
+  ysTest2 <- resample(ysTest2, rf, length(ysTest2))  # COBA
   
   plot(ysTest2, type = "l", xlab = "Index", ylab = "Value", main = "Feet and Average Half Selection")
   
 
   for (i in 1:floor((length(feet)-1)/2)) {
     ys <- yr[(feet[yl[i]]):(feet[yl[i]+1])]
-    ys <- resampleQ(ys, rf, length(ys), i)
+    ys <- resample(ys, rf, length(ys))
     ysum <- ysum + ys
     points(ys, col = "green", pch = ".")
   }

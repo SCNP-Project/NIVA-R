@@ -106,8 +106,8 @@ compCalc <- function(comp,sys,dia,height) {
   a5 <- f[5];
   a6 <- f[6];
   
-  C1 <- 2*a4*((a2+a4)^2+a5^2)/(R*a2*(2*a4+a2)*(a4^2+a5^2))
-  C2 <- 1/(R*(2*a4+a2))
+  C2 <- 2*a4*((a2+a4)^2+a5^2)/(R*a2*(2*a4+a2)*(a4^2+a5^2))
+  C1 <- 1/(R*(2*a4+a2))
   
   listReturn <- list(
     C1 = C1,
