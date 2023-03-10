@@ -11,13 +11,12 @@ findpressure <- function(raw, cSys, cDia, title){
   P <- raw/17895
   
   # write.csv(pressLA,  paste(title, "_P.scv"))
-  
-  plot(P, type='l', main =  paste(title, "P"),  xlab="Time (mili second)", ylab="mmhg")
+  # plot(P, type='l', main =  paste(title, "P"),  xlab="Time (mili second)", ylab="mmhg")
   
   pf <- smoothTest2(P,2000)
   osc <- P - pf;
   
-  plot(osc, type='l', main =  paste(title, "OSC"),  xlab="Time (mili second)", ylab="mmhg")
+  # plot(osc, type='l', main =  paste(title, "OSC"),  xlab="Time (mili second)", ylab="mmhg")
   
   press <- medianFilter1(P, 100)
   #loc <- match(max(press), press)

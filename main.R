@@ -19,16 +19,16 @@ source("./compCalc.R")
 source("./calculatePpg.R")
 
 # koefisien / constant
-arm_cSys <- 0.65
-arm_cDia <- 0.75
+arm_cSys <- 0.62
+arm_cDia <- 0.65
 leg_cSys <- 0.65
-leg_cDia <- 0.75
+leg_cDia <- 0.65
 height <- 170
 
 source("./findPressure.R")
 pressarmleft <- findpressure(pressLA, arm_cSys, arm_cDia, 'Left Arm')
 pressarmright <- findpressure(pressRA, arm_cSys, arm_cDia, 'Right Arm')
-presslegleft <- findpressure(pressLL, 0.8, leg_cDia, 'Left Leg')
+presslegleft <- findpressure(pressLL, leg_cSys, leg_cDia, 'Left Leg')
 presslegright <- findpressure(pressRL, leg_cSys, leg_cDia, 'Right Leg')
 
 lasys <- pressarmleft$systolic
@@ -62,11 +62,9 @@ df
 source("./modules/resampleQ.R")
 source("./modules/waveSelect.R")
 comp_select <- waveselect(comp)
-
+comp_select <- t(comp_select)
 plot(comp_select, type='l', main =  'comp_select',  xlab="Time (mili second)")
 
-# comp_select
-# test <- dim(comp)
 compresult <- compCalc(comp_select, lasys, ladia, height)
 C1 <- compresult$C1
 C2 <- compresult$C2
@@ -80,6 +78,26 @@ ppgparams <- calculatePpg(ppginput, height)
 
 # ini change
 
+
+#### TESTING ####
+
+testCompSelect <- read.csv("./data/comp_select")
+mydata <- read.table("./data/comp_select", header = FALSE)
+my_vector <- scan(text = mydata$V1, sep = ",")
+plot(my_vector, type='l', main =  'comp_select',  xlab="Time (mili second)")
+
+
+lasys2 <- 135.2991
+ladia2 <- 79.3774
+height2<- 170
+source("./compCalc.R")
+compresult <- compCalc(my_vector, lasys2, ladia2, height2)
+source("./compCalcOld.R")
+compresult <- compCalcOld(my_vector, lasys, ladia, height)
+C1 <- compresult$C1
+C2 <- compresult$C2
+Pdata <- compresult$Pdata
+C
 
 
 
