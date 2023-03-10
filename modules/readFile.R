@@ -1,6 +1,6 @@
 
 # dataMatlabc <- read.csv("./data/Hendra")
-dataMatlabc <- read.csv("./Hendra")
+dataMatlabc <- read.csv("./Durokhim")
 
 pressLA <- dataMatlabc[2001:72000, 1]
 pressRA <- dataMatlabc[2001:72000, 2]

@@ -51,7 +51,7 @@ rightbapwv <- findbapwv(pressRA, pressRL, height)
 
 
 df <- data.frame(
-  name = c('LA systolic','LA diastolic','RA systolic','RA diastolic','LL systolic','LL diastolic','LL diastolic','RL diastolic','Left ABI','Right ABI','Left baPWV','Right baPWV'),
+  name = c('LA systolic','LA diastolic','RA systolic','RA diastolic','LL systolic','LL diastolic','RL systolic','RL diastolic','Left ABI','Right ABI','Left baPWV','Right baPWV'),
   value = c(lasys,ladia,rasys,radia,llsys,lldia,rlsys,rldia,leftabi,rightabi,leftbapwv,rightbapwv)
 )
 df
@@ -62,9 +62,12 @@ df
 source("./modules/resampleQ.R")
 source("./modules/waveSelect.R")
 comp_select <- waveselect(comp)
-comp_select <- t(comp_select)
+# comp_select <- t(comp_select)
+
 plot(comp_select, type='l', main =  'comp_select',  xlab="Time (mili second)")
 
+source("./modules/differential.R")
+source("./compCalc.R")
 compresult <- compCalc(comp_select, lasys, ladia, height)
 C1 <- compresult$C1
 C2 <- compresult$C2
@@ -96,8 +99,6 @@ source("./compCalcOld.R")
 compresult <- compCalcOld(my_vector, lasys, ladia, height)
 C1 <- compresult$C1
 C2 <- compresult$C2
-Pdata <- compresult$Pdata
-C
 
 
 

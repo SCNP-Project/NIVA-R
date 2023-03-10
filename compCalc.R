@@ -6,9 +6,9 @@ compCalc <- function(comp,sys,dia,height) {
   R <- 1.125
   r <- 0.9999;
   
-  data1 <- comp
+  data1 <-comp
   
-  differential_data <- differential(comp, s, r)
+  differential_data <- differential(data1, s, r)
   y2 <- differential_data$y2
   ddata1 <- differential_data$d1
   d2data1 <- differential_data$d2

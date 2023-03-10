@@ -21,7 +21,7 @@ findpressure <- function(raw, cSys, cDia, title){
   press <- medianFilter1(P, 100)
   #loc <- match(max(press), press)
   loc <- which(press == max(press))
-  loc <- loc[1]
+  loc <- loc[1] + 2000
   
   oscmaxmin <- c()
   
@@ -64,7 +64,6 @@ findpressure <- function(raw, cSys, cDia, title){
   
   # pos <- which.max(oscmaxmin)
   pos <- peakFinder(newOscmaxim)
-  testPos <- pos
   pos <- pos + 1999
   
   
@@ -95,7 +94,6 @@ findpressure <- function(raw, cSys, cDia, title){
   diaidx <- i
   
   listReturn <- list(
-    testPos = testPos,
     systolic = sys,
     diastolic = dia
   )
