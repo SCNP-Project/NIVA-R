@@ -28,13 +28,11 @@ compCalc <- function(comp,sys,dia,height) {
   scl <- (Psis - Pdia) / Pmax
   Pdata <- Pdia + scl * Pdata
   
-  testPdata <- Pdata
-  
   # Pick diastolic wave, start from ds
   y <- Pdata[startDia:ndata]
   x <- c(1 : length(y)-1) / s
   
-  test <- startDia
+  test <- y
   
   # 11111111
   #===========================================================================
@@ -61,66 +59,28 @@ compCalc <- function(comp,sys,dia,height) {
   # a4 <- coef(f)[4]
   # a5 <- coef(f)[5]
   # a6 <- coef(f)[6]
-  # C1 <- 2*a4*((a2+a4)^2+a5^2)/(R*a2*(2*a4+a2)*(a4^2+a5^2))
-  # C2 <- 1/(R*(2*a4+a2))
-  #
-  # listReturn <- list(
-  #   C1 = C1,
-  #   C2 = C2
-  # )
-  #
-  # return(listReturn)
   
   
-  # 22222
+  # 2 ========== Working
   #===========================================================================
-
-  fo <- y ~ a1 * exp(-a2 * x) + a3 * exp(-a4 * x) * cos(a5 * x + a6)
-  fun <- function(a) {
-    a[1] * exp(-a[2] * x) + a[3] * exp(-a[4] * x) * cos(a[5] * x + a[6])
-  }
-
-  startA1 <- 1
-  startA2 <-  1 / 1.125
-  startA3 <- 1
-  startA4 <-  1 / (2 * 1.125 * 0.1)
-  startA5 <- 15
-  startA6 <- 0
-
-  lowerA1 <- 0
-  lowerA2 <- 0
-  lowerA3 <- 0
-  lowerA4 <- 0
-  lowerA5 <- 0
-  lowerA6 <- -50
-
-  upperA1 <- 200
-  upperA2 <- 10
-  upperA3 <- 100
-  upperA4 <- 100
-  upperA5 <- 50
-  upperA6 <- 50
-
-  start <- c(a1 = startA1, a2 = startA2, a3 = startA3, a4 = startA4, a5 = startA5, a6 = startA6)
-  lower <- c(a1 = lowerA1, a2 = lowerA2, a3 = lowerA3, a4 = lowerA4, a5 = lowerA5, a6 = lowerA6)
-  upper <- c(a1 = upperA1, a2 = upperA2, a3 = upperA3, a4 = upperA4, a5 = upperA5, a6 = upperA6)
-
-  require(nlsr)
-  f <- nlxb(fo, data = data.frame(x,y), start = start, lower = lower, upper = upper)
-  f <- f$coefficients
-
-  a1 <- f[1];
-  a2 <- f[2];
-  a3 <- f[3];
-  a4 <- f[4];
-  a5 <- f[5];
-  a6 <- f[6];
-
-  cc <- 2*a4*((a2+a4)^2+a5^2)/(R*a2*(2*a4+a2)*(a4^2+a5^2))
-  c <- 1/(R*(2*a4+a2))
   
-  C1 <- max(cc, c)
-  C2 <- min(cc, c)
+  # fo <- y ~ a1 * exp(-a2 * x) + a3 * exp(-a4 * x) * cos(a5 * x + a6)
+  # 
+  # start <- c(a1 = 1, a2 = 1/R, a3 = 1, a4 = 1/(2*R*0.1), a5 = 15, a6 = 0)
+  # lower <- c(0, 0, 0, 0, 0, -50)
+  # upper <- c(200, 10, 100, 100, 50, 50)
+  # 
+  # require(nlsr)
+  # f <- nlxb(fo, data = data.frame(x,y), start = start, lower = lower, upper = upper)
+  # f <- f$coefficients
+  # 
+  # a1 <- f[1];
+  # a2 <- f[2];
+  # a3 <- f[3];
+  # a4 <- f[4];
+  # a5 <- f[5];
+  # a6 <- f[6];
+
   
 
   # 333333333333333
@@ -159,6 +119,7 @@ compCalc <- function(comp,sys,dia,height) {
   # library(nlme)
   # o <- nls.control(maxiter = 100, warnOnly = TRUE, minFactor = 1/1024)
   # g <- nls(y ~ a1*exp(-a2*t) + a3*exp(-a4*t)*cos(a5*t+a6),
+  #          data = data.frame(x,y),
   #          start = list(a1 = 1, a2 = 1/R, a3 = 1, a4 = 1/(2*R*0.1), a5 = 15, a6 = 0),
   #          lower = list(a1 = 0, a2 = 0, a3 = 0, a4 = 0, a5 = 0, a6 = -50),
   #          upper = list(a1 = 200, a2 = 10, a3 = 100, a4 = 100, a5 = 50, a6 = 50),
@@ -206,6 +167,7 @@ compCalc <- function(comp,sys,dia,height) {
   
   # 666666
   # Define the model
+  # library(minpack.lm)
   # model <- function(t, a1, a2, a3, a4, a5, a6) {
   #   a1 * exp(-a2 * t) + a3 * exp(-a4 * t) * cos(a5 * t + a6)
   # }
@@ -235,14 +197,72 @@ compCalc <- function(comp,sys,dia,height) {
   # C2 <- 1 / (R * (2 * a4 + a2))
   
   
+  # 7 ========== Working
+  library(minpack.lm)
+  require(nlsr)
+  
+
+      fo <- y ~ a1 * exp(-a2 * x) + a3 * exp(-a4 * x) * cos(a5 * x + a6)
+      
+      start <- c(a1 = 1, a2 = 1/R, a3 = 1, a4 = 1/(2*R*0.1), a5 = 15, a6 = 0)
+      lower <- c(0, 0, 0, 0, 0, -50)
+      upper <- c(200, 10, 100, 100, 50, 50)
+
+  
+  tryCatch({
+    
+    try({
+      
+      g <- nlsLM(fo, data = data.frame(x,y), start = start, lower = lower, upper = upper)
+      
+      # calculate compliance
+      a1 <- coef(g)["a1"]
+      a2 <- coef(g)["a2"]
+      a3 <- coef(g)["a3"]
+      a4 <- coef(g)["a4"]
+      a5 <- coef(g)["a5"]
+      a6 <- coef(g)["a6"]
+      
+   
+     
+    })
+    
+    on.error <- try({
+      message("Don't Worry - Program Not Kill")
+      f <- nlxb(fo, data = data.frame(x,y), start = start, lower = lower, upper = upper)
+      f <- f$coefficients
+      
+      a1 <- f[1];
+      a2 <- f[2];
+      a3 <- f[3];
+      a4 <- f[4];
+      a5 <- f[5];
+      a6 <- f[6];
+    
+    }, silent = TRUE)
+    
+  },
+  error = function(e) {
+    message("An error occurred: ", e)
+  }
+  )
   
   
+  c <- 2 * a4 * ((a2 + a4)^2 + a5^2) / (R * a2 * (2 * a4 + a2) * (a4^2 + a5^2))
+  cc <- 1 / (R * (2 * a4 + a2))
+  
+  C1 <- max(cc, c)
+  C2 <- min(cc, c)
   
   listReturn <- list(
     C1 = C1,
     C2 = abs(C2),
-    # Pdata = testPdata,
-    test = test
+    a1 = a1,
+    a2 = a2,
+    a3 = a3,
+    a4 = a4,
+    a5 = a5,
+    a6 = a6
   )
 
   return(listReturn)

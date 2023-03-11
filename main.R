@@ -62,17 +62,14 @@ df
 source("./modules/resampleQ.R")
 source("./modules/waveSelect.R")
 comp_select <- waveselect(comp)
-# comp_select <- t(comp_select)
+# comp_selectT <- t(comp_select)
 
-plot(comp_select, type='l', main =  'comp_select',  xlab="Time (mili second)")
-
-source("./modules/differential.R")
 source("./compCalc.R")
 compresult <- compCalc(comp_select, lasys, ladia, height)
 C1 <- compresult$C1
 C2 <- compresult$C2
 
-# Perhitungan PPG
+C1# Perhitungan PPG
 ppg_select <- waveselect(PPGLA)
 ppginput <- PPGLA
 ppginput <- ppginput[40760:(40760+12500)]
@@ -84,21 +81,25 @@ ppgparams <- calculatePpg(ppginput, height)
 
 #### TESTING ####
 
-testCompSelect <- read.csv("./data/comp_select")
-mydata <- read.table("./data/comp_select", header = FALSE)
+mydata <- read.table("./data/comp_select_Durokhim.csv", header = FALSE)
 my_vector <- scan(text = mydata$V1, sep = ",")
 plot(my_vector, type='l', main =  'comp_select',  xlab="Time (mili second)")
 
 
-lasys2 <- 135.2991
-ladia2 <- 79.3774
+lasys2 <- 121.0177
+ladia2 <- 79.8303
 height2<- 170
 source("./compCalc.R")
-compresult <- compCalc(my_vector, lasys2, ladia2, height2)
+compresult2 <- compCalc(my_vector, lasys, ladia, height)
+C1t <- compresult2$C1
+C2t <- compresult2$C2
 source("./compCalcOld.R")
 compresult <- compCalcOld(my_vector, lasys, ladia, height)
 C1 <- compresult$C1
 C2 <- compresult$C2
+
+
+
 
 
 
